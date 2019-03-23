@@ -10,7 +10,7 @@
     using Interfaces;
     using Models;
 
-    public class MachineDataRepository : IReadMachineDataRepository, IWriteMachineDataRepository
+    public class MachineDataRepository : IReadMachineDataRepository, IWriteMachineDataRepository, IConfigureRepository
     {
         private readonly IInfluxDb _influxDb;
 
@@ -42,6 +42,16 @@
                           }).ToArray();
 
             await _influxDb.WriteAsync("machinedata", points);
+        }
+
+        public async Task Configure()
+        {
+            var dbs = await _influxDb.ShowDatabasesAsync();
+
+            if (dbs.All(x => x.Name != "machinedata"))
+            {
+                await _influxDb.CreateDatabaseAsync("machinedata");
+            }
         }
     }
 }

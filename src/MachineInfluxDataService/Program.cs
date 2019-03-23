@@ -88,7 +88,7 @@
 
                 Component.For<MachineDataIntegrationEventHandler>(),
 
-                Component.For<IWriteMachineDataRepository>()
+                Component.For<IConfigureRepository, IWriteMachineDataRepository>()
                          .ImplementedBy<MachineDataRepository>()
                          .DependsOn(new
                          {
