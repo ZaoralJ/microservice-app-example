@@ -10,10 +10,10 @@
         private readonly IMachineFactory _machineFactory;
         private Dictionary<string, IMachine> _machines;
 
-        public MachineManager(IMachineFactory machineFactory)
+        public MachineManager(IMachineFactory machineFactory, int machineCount)
         {
             _machineFactory = machineFactory;
-            CreateMachines();
+            CreateMachines(machineCount);
         }
 
         public IMachine GetMachine(string machineName)
@@ -26,9 +26,9 @@
             return _machines.Select(x => x.Value);
         }
 
-        private void CreateMachines()
+        private void CreateMachines(int machineCount)
         {
-            _machines = Enumerable.Range(1, 20)
+            _machines = Enumerable.Range(1, machineCount)
                                   .Select(m =>
                                       {
                                           var machine = _machineFactory.CreateMachine($"M{m}");
