@@ -1,4 +1,4 @@
-﻿namespace MachineSqlDataService
+﻿namespace MachineInfluxDataService
 {
     using System;
     using System.Threading.Tasks;

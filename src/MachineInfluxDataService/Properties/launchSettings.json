@@ -1,0 +1,10 @@
+{
+  "profiles": {
+    "MachineInfluxDataService": {
+      "commandName": "Project"
+    },
+    "Docker": {
+      "commandName": "Docker"
+    }
+  }
+}

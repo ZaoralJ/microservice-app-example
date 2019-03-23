@@ -1,4 +1,4 @@
-namespace MachineSqlDataService
+﻿namespace MachineInfluxDataService
 {
     using System;
     using System.Globalization;
@@ -7,7 +7,7 @@ namespace MachineSqlDataService
     using Castle.MicroKernel.Registration;
     using Castle.Windsor;
     using Castle.Windsor.MsDependencyInjection;
-    using Data.Sql;
+    using Data.Influx;
     using EventBus;
     using EventBus.RabbitMQ;
     using Interfaces;
@@ -46,7 +46,9 @@ namespace MachineSqlDataService
                     RabbitMqUser = Environment.GetEnvironmentVariable("RABBITMQ_USER"),
                     RabbitMqPassword = Environment.GetEnvironmentVariable("RABBITMQ_PASSWORD"),
                     RabbitMqPrefetchCount = int.Parse(Environment.GetEnvironmentVariable("RABBITMQ_PREFETCH_COUNT"), CultureInfo.InvariantCulture),
-                    SqlConnectionString = Environment.GetEnvironmentVariable("SQL_CONNECTION_STRING")
+                    InfluxEndpoint = Environment.GetEnvironmentVariable("INFLUX_ENDPOINT"),
+                    InfluxUserName = Environment.GetEnvironmentVariable("INFLUX_USERNAME"),
+                    InfluxPassword = Environment.GetEnvironmentVariable("INFLUX_PASSWORD")
                 };
             }
             else
@@ -88,7 +90,12 @@ namespace MachineSqlDataService
 
                 Component.For<IWriteMachineDataRepository>()
                          .ImplementedBy<MachineDataRepository>()
-                         .DependsOn(new { connectionString = cfg.SqlConnectionString }),
+                         .DependsOn(new
+                         {
+                             endpoint = cfg.InfluxEndpoint,
+                             userName = cfg.InfluxUserName,
+                             password = cfg.InfluxPassword
+                         }),
 
                 Component.For<Service>());
 
