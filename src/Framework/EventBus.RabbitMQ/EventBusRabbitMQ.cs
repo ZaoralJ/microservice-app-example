@@ -23,6 +23,7 @@
         private readonly int _retryCount;
         private readonly string _brokerName;
         private readonly string _queueName;
+        private readonly int _prefetchCount;
         private IModel _consumerChannel;
 
         public EventBusRabbitMQ(
@@ -30,17 +31,34 @@
             ILogger logger,
             IEventBusSubscriptionsManager subsManager,
             IIntegrationEventHandlerFactory integrationEventHandlerFactory,
-            string brokerName,
-            string queueName = null,
-            int retryCount = 5)
+            string brokerName) : this(
+                brokerName,
+                string.Empty,
+                0,
+                persistentConnection,
+                logger,
+                subsManager,
+                integrationEventHandlerFactory)
         {
+        }
+
+        public EventBusRabbitMQ(
+            string brokerName,
+            string queueName,
+            int prefetchCount,
+            IRabbitMQPersistentConnection persistentConnection,
+            ILogger logger,
+            IEventBusSubscriptionsManager subsManager,
+            IIntegrationEventHandlerFactory integrationEventHandlerFactory)
+        {
+            _brokerName = brokerName;
+            _queueName = queueName;
+            _prefetchCount = prefetchCount;
             _persistentConnection = persistentConnection ?? throw new ArgumentNullException(nameof(persistentConnection));
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
             _integrationEventHandlerFactory = integrationEventHandlerFactory;
             _subsManager = subsManager ?? new InMemoryEventBusSubscriptionsManager();
-            _brokerName = brokerName;
-            _queueName = queueName;
-            _retryCount = retryCount;
+            _retryCount = 5;
         }
 
         public void Publish(IntegrationEvent @event)
@@ -117,6 +135,11 @@
 
             var channel = _persistentConnection.CreateModel();
 
+            if (_prefetchCount > 0)
+            {
+                channel.BasicQos(0, (ushort)_prefetchCount, false);
+            }
+
             var consumer = new EventingBasicConsumer(channel);
             consumer.Received += async (model, ea) =>
             {
@@ -147,7 +170,7 @@
             if (_subsManager.HasSubscriptionsForEvent(eventName))
             {
                 var subscriptions = _subsManager.GetHandlersForEvent(eventName);
-                
+
                 foreach (var subscription in subscriptions)
                 {
                     var handler = _integrationEventHandlerFactory.GetIntegrationEventHandler(subscription.HandlerType.FullName);
