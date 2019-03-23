@@ -65,6 +65,7 @@
                 {
                     if (MachineStatus == MachineStatus.Running)
                     {
+                        var ts = DateTime.UtcNow;
                         var machineEvent = new MachineDataIntegrationEvent
                         {
                             MachineName = MachineName,
@@ -73,7 +74,7 @@
                                                       {
                                                           Name = $"Value{v}",
                                                           Value = r.Next(v + 10, v + 15),
-                                                          TimeStamp = DateTime.UtcNow
+                                                          TimeStamp = ts
                                                       }).ToList()
                         };
 
