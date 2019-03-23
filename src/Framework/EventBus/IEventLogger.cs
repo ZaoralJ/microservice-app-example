@@ -4,6 +4,10 @@
 
     public interface IEventLogger
     {
-        void Trace(IntegrationEvent integrationEvent);
+        void TracePublish<T>(T integrationEvent)
+            where T : IntegrationEvent;
+
+        void TraceHandle<T>(T integrationEvent)
+            where T : IntegrationEvent;
     }
 }

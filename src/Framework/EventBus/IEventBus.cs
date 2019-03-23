@@ -4,7 +4,8 @@
 
     public interface IEventBus
     {
-        void Publish(IntegrationEvent integrationEvent);
+        void Publish<T>(T integrationEvent) 
+            where T : IntegrationEvent;
 
         void Subscribe<T, TH>()
             where T : IntegrationEvent

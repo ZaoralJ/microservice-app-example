@@ -33,5 +33,12 @@
 
         [JsonProperty]
         public string PayLoadVersion { get; set; }
+
+        public override string ToString()
+        {
+            return ParentId != Guid.Empty ? 
+                       $"{nameof(ParentId)}: {ParentId}, {nameof(Id)}: {Id}, {nameof(CreationDate)}: {CreationDate}" :
+                       $"{nameof(Id)}: {Id}, {nameof(CreationDate)}: {CreationDate}";
+        }
     }
 }

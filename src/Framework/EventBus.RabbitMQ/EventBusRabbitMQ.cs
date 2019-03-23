@@ -18,6 +18,7 @@
     {
         private readonly IRabbitMQPersistentConnection _persistentConnection;
         private readonly ILogger _logger;
+        private readonly IEventLogger _eventLogger;
         private readonly IIntegrationEventHandlerFactory _integrationEventHandlerFactory;
         private readonly IEventBusSubscriptionsManager _subsManager;
         private readonly int _retryCount;
@@ -27,18 +28,20 @@
         private IModel _consumerChannel;
 
         public EventBusRabbitMQ(
+            string brokerName,
             IRabbitMQPersistentConnection persistentConnection,
-            ILogger logger,
             IEventBusSubscriptionsManager subsManager,
             IIntegrationEventHandlerFactory integrationEventHandlerFactory,
-            string brokerName) : this(
+            IEventLogger eventLogger,
+            ILogger logger) : this(
                 brokerName,
                 string.Empty,
                 0,
                 persistentConnection,
-                logger,
                 subsManager,
-                integrationEventHandlerFactory)
+                integrationEventHandlerFactory,
+                eventLogger,
+                logger)
         {
         }
 
@@ -47,23 +50,25 @@
             string queueName,
             int prefetchCount,
             IRabbitMQPersistentConnection persistentConnection,
-            ILogger logger,
             IEventBusSubscriptionsManager subsManager,
-            IIntegrationEventHandlerFactory integrationEventHandlerFactory)
+            IIntegrationEventHandlerFactory integrationEventHandlerFactory,
+            IEventLogger eventLogger,
+            ILogger logger)
         {
             _brokerName = brokerName;
             _queueName = queueName;
             _prefetchCount = prefetchCount;
             _persistentConnection = persistentConnection ?? throw new ArgumentNullException(nameof(persistentConnection));
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
+            _eventLogger = eventLogger ?? throw new ArgumentNullException(nameof(eventLogger));
             _integrationEventHandlerFactory = integrationEventHandlerFactory;
             _subsManager = subsManager ?? new InMemoryEventBusSubscriptionsManager();
             _retryCount = 5;
         }
 
-        public void Publish(IntegrationEvent @event)
+        public void Publish<T>(T @event) where T : IntegrationEvent
         {
-            _logger.Debug($"Publish {@event}");
+            _eventLogger.TracePublish(@event);
 
             if (!_persistentConnection.IsConnected)
             {
@@ -74,7 +79,7 @@
                 .Or<SocketException>()
                 .WaitAndRetry(_retryCount, retryAttempt => TimeSpan.FromSeconds(Math.Pow(2, retryAttempt)), (ex, time) =>
                 {
-                    _logger.Warn(ex.ToString());
+                    _logger.Warn(ex);
                 });
 
             using (var channel = _persistentConnection.CreateModel())

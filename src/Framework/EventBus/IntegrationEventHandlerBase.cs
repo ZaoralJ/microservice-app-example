@@ -15,7 +15,7 @@
 
         public Task Handle(TIntegrationEvent integrationEvent)
         {
-            EventLogger.Trace(integrationEvent);
+            EventLogger.TraceHandle(integrationEvent);
             return HandleBody(integrationEvent);
         }
 

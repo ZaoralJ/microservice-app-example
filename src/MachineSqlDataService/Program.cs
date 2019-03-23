@@ -66,6 +66,9 @@ namespace MachineSqlDataService
                 Component.For<IEventBusSubscriptionsManager>()
                          .ImplementedBy<InMemoryEventBusSubscriptionsManager>(),
 
+                Component.For<IEventLogger>()
+                         .ImplementedBy<ConsoleEventLogger>(),
+
                 Component.For<IEventBus>()
                          .ImplementedBy<EventBusRabbitMQ>()
                          .DependsOn(new
