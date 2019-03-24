@@ -19,6 +19,8 @@
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
+    using Microsoft.Extensions.Hosting;
+    using IHostingEnvironment = Microsoft.AspNetCore.Hosting.IHostingEnvironment;
 
     public class Startup
     {
@@ -52,6 +54,8 @@
 
                 cfg = appSettingSection.Get<Configuration>();
             }
+
+            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
 
             var container = new WindsorContainer();
             container.AddFacility<AspNetCoreFacility>(f => f.CrossWiresInto(services));
@@ -89,10 +93,13 @@
 
                 Component.For<IMachineManager>()
                          .ImplementedBy<MachineManager>()
-                         .DependsOn(new { machineCount = cfg.MachineCount }));
+                         .DependsOn(new { machineCount = cfg.MachineCount }),
+                
+                Component.For<Service>());
 
-            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
             services.AddWindsor(container, opts => opts.UseEntryAssembly(typeof(IRef).Assembly));
+
+            services.AddSingleton<IHostedService>(container.Resolve<Service>());
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
