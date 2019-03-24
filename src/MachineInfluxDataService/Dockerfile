@@ -13,6 +13,7 @@ COPY ["Framework/Extensions/Extensions.csproj", "Framework/Extensions/"]
 COPY ["Framework/Logging/Logging.csproj", "Framework/Logging/"]
 COPY ["Framework/Logging.NLog.Impl.Castle/Logging.NLog.Impl.Castle.csproj", "Framework/Logging.NLog.Impl.Castle/"]
 COPY ["Data.Influx/Data.Influx.csproj", "Data.Influx/"]
+COPY ["EventLogger.NLog/EventLogger.NLog.csproj", "EventLogger.NLog/"]
 RUN dotnet restore "MachineInfluxDataService/MachineInfluxDataService.csproj"
 COPY . .
 WORKDIR "/src/MachineInfluxDataService"

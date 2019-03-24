@@ -11,6 +11,7 @@ COPY ["Framework/EventBus.RabbitMQ/EventBus.RabbitMQ.csproj", "Framework/EventBu
 COPY ["Framework/Extensions/Extensions.csproj", "Framework/Extensions/"]
 COPY ["Framework/Logging/Logging.csproj", "Framework/Logging/"]
 COPY ["Framework/Logging.NLog.Impl.Castle/Logging.NLog.Impl.Castle.csproj", "Framework/Logging.NLog.Impl.Castle/"]
+COPY ["EventLogger.NLog/EventLogger.NLog.csproj", "EventLogger.NLog/"]
 RUN dotnet restore "MachineService/MachineService.csproj"
 COPY . .
 WORKDIR "/src/MachineService"
