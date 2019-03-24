@@ -28,12 +28,6 @@
             return Ok(_machineManager.GetMachine(machineName));
         }
 
-        [HttpGet("{machineName}/lastvalues")]
-        public IActionResult MachineLastValues(string machineName)
-        {
-            return Ok(_machineManager.GetMachine(machineName)?.LastMachineValues);
-        }
-
         [HttpPost("{machineName}/start")]
         public IActionResult StartMachine(string machineName)
         {
