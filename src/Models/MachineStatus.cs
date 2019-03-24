@@ -1,4 +1,4 @@
-﻿namespace MachineService.Core
+﻿namespace Models
 {
     public enum MachineStatus
     {

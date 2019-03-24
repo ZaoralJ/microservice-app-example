@@ -1,7 +1,6 @@
 ﻿namespace MachineService.Controllers
 {
     using System;
-    using Logging;
     using MachineService.Core;
     using Microsoft.AspNetCore.Mvc;
 
@@ -11,7 +10,7 @@
     {
         private readonly IMachineManager _machineManager;
 
-        public MachineController(IMachineManager machineManager, ILogger logger)
+        public MachineController(IMachineManager machineManager)
         {
             _machineManager = machineManager ?? throw new ArgumentNullException(nameof(machineManager));
         }
@@ -26,20 +25,6 @@
         public IActionResult GetMachine(string machineName)
         {
             return Ok(_machineManager.GetMachine(machineName));
-        }
-
-        [HttpPost("{machineName}/start")]
-        public IActionResult StartMachine(string machineName)
-        {
-            _machineManager.GetMachine(machineName).StartMachine();
-            return Ok();
-        }
-
-        [HttpPost("{machineName}/stop")]
-        public IActionResult StopMachine(string machineName)
-        {
-            _machineManager.GetMachine(machineName).StopMachine();
-            return Ok();
         }
     }
 }

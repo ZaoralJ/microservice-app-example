@@ -16,13 +16,23 @@
         public void TracePublish<T>(T integrationEvent)
             where T : IntegrationEvent
         {
-            _logger.Info("{value1} {value2} {value3}, {value4} {value5}", "Published", typeof(T).FullName, integrationEvent.ParentId, integrationEvent.Id, integrationEvent.CreationDate);
+            _logger.Info("{value1} {value2} {value3}, {value4} {value5} {value6}", "Published",
+                typeof(T).FullName,
+                integrationEvent.ParentId,
+                integrationEvent.Id,
+                integrationEvent.CreationDate,
+                integrationEvent.Description);
         }
 
         public void TraceHandle<T>(T integrationEvent)
             where T : IntegrationEvent
         {
-            _logger.Info("{value1} {value2} {value3}, {value4} {value5}", "Handled", typeof(T).FullName, integrationEvent.ParentId, integrationEvent.Id, integrationEvent.CreationDate);
+            _logger.Info("{value1} {value2} {value3}, {value4} {value5} {value6}", "Handled",
+                typeof(T).FullName,
+                integrationEvent.ParentId,
+                integrationEvent.Id,
+                integrationEvent.CreationDate,
+                integrationEvent.Description);
         }
     }
 }

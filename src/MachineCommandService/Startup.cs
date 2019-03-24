@@ -1,7 +1,6 @@
-﻿namespace MachineService
+﻿namespace MachineCommandService
 {
     using System;
-    using System.Globalization;
     using Castle.Facilities.AspNetCore;
     using Castle.Facilities.TypedFactory;
     using Castle.MicroKernel.Registration;
@@ -10,18 +9,11 @@
     using EventBus.RabbitMQ;
     using EventLogger.NLog;
     using Logging.NLog.Impl.Castle;
-    using MachineService.Core;
-    using MachineService.EventHandlers;
-    using MachineService.Factories;
-    using MachineService.Managers;
-    using MachineService.Models;
     using Microsoft.AspNetCore.Builder;
     using Microsoft.AspNetCore.Hosting;
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
-    using Microsoft.Extensions.Hosting;
-    using IHostingEnvironment = Microsoft.AspNetCore.Hosting.IHostingEnvironment;
 
     public class Startup
     {
@@ -42,11 +34,9 @@
                 cfg = new Configuration
                 {
                     RabbitMqBrokerName = Environment.GetEnvironmentVariable("RABBITMQ_BROKER_NAME"),
-                    RabbitMqQueueName = Environment.GetEnvironmentVariable("RABBITMQ_QUEUE_NAME"),
                     RabbitMqHost = Environment.GetEnvironmentVariable("RABBITMQ_HOST"),
                     RabbitMqUser = Environment.GetEnvironmentVariable("RABBITMQ_USER"),
                     RabbitMqPassword = Environment.GetEnvironmentVariable("RABBITMQ_PASSWORD"),
-                    MachineCount = int.Parse(Environment.GetEnvironmentVariable("MACHINE_COUNT"), CultureInfo.InvariantCulture)
                 };
             }
             else
@@ -66,8 +56,6 @@
             container.Install(new LogInstaller());
 
             container.Register(
-                Component.For<IMachineFactory>().AsFactory(),
-
                 Component.For<IIntegrationEventHandlerFactory>().AsFactory(new IntegrationEventHandlerComponentSelector()),
 
                 Component.For<IEventBusSubscriptionsManager>()
@@ -78,12 +66,7 @@
 
                 Component.For<IEventBus>()
                          .ImplementedBy<EventBusRabbitMQ>()
-                         .DependsOn(new
-                         {
-                             brokerName = cfg.RabbitMqBrokerName,
-                             queueName = cfg.RabbitMqQueueName,
-                             prefetchCount = 10
-                         }),
+                         .DependsOn(new { brokerName = cfg.RabbitMqBrokerName }),
 
                 Component.For<IRabbitMQPersistentConnection>()
                          .ImplementedBy<DefaultRabbitMQPersistentConnection>()
@@ -92,23 +75,9 @@
                              hostName = cfg.RabbitMqHost,
                              userName = cfg.RabbitMqUser,
                              password = cfg.RabbitMqPassword
-                         }),
-
-                Component.For<IMachine>()
-                         .ImplementedBy<Machine>()
-                         .LifestyleTransient(),
-
-                Component.For<IMachineManager>()
-                         .ImplementedBy<MachineManager>()
-                         .DependsOn(new { machineCount = cfg.MachineCount }),
-
-                Component.For<MachineCommandIntegrationEventHandler>(),
-
-                Component.For<Service>());
+                         }));
 
             services.AddWindsor(container, opts => opts.UseEntryAssembly(typeof(IRef).Assembly));
-
-            services.AddSingleton<IHostedService>(container.Resolve<Service>());
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

@@ -31,17 +31,21 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Models", "Models\Models.csp
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MachineSqlDataService", "MachineSqlDataService\MachineSqlDataService.csproj", "{D11BBD14-C7C8-4AAD-85B9-B5079C59971A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Interfaces", "Interfaces\Interfaces.csproj", "{1F5F16B0-A6D9-4173-B942-B89C97E0DE67}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Interfaces", "Interfaces\Interfaces.csproj", "{1F5F16B0-A6D9-4173-B942-B89C97E0DE67}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Data.Sql", "Data.Sql\Data.Sql.csproj", "{9DFDA1E0-75B3-4CDB-BD64-BDC2EBC34D86}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Data.Sql", "Data.Sql\Data.Sql.csproj", "{9DFDA1E0-75B3-4CDB-BD64-BDC2EBC34D86}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Data.Influx", "Data.Influx\Data.Influx.csproj", "{F0E2F5B6-DE1B-4126-9D9F-F3798E975022}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Data.Influx", "Data.Influx\Data.Influx.csproj", "{F0E2F5B6-DE1B-4126-9D9F-F3798E975022}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MachineInfluxDataService", "MachineInfluxDataService\MachineInfluxDataService.csproj", "{E3C81324-F2B9-4563-941B-139708B19301}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MachineInfluxDataService", "MachineInfluxDataService\MachineInfluxDataService.csproj", "{E3C81324-F2B9-4563-941B-139708B19301}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EventLogger.NLog", "EventLogger.NLog\EventLogger.NLog.csproj", "{89445FE7-4539-4025-92C7-E1A06EE7B274}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EventLogger.NLog", "EventLogger.NLog\EventLogger.NLog.csproj", "{89445FE7-4539-4025-92C7-E1A06EE7B274}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MachineDataApi", "MachineDataApi\MachineDataApi.csproj", "{F9152A3B-33E4-4DF3-B844-640830066810}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MachineDataApi", "MachineDataApi\MachineDataApi.csproj", "{F9152A3B-33E4-4DF3-B844-640830066810}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MachineCommandService", "MachineCommandService\MachineCommandService.csproj", "{AF29DACC-2D19-4994-8DDA-F9A47C878248}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MachineStatusService", "MachineStatusService\MachineStatusService.csproj", "{7A63C49A-8565-46D0-B67C-1B3D30B8B0B0}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -117,6 +121,14 @@ Global
 		{F9152A3B-33E4-4DF3-B844-640830066810}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F9152A3B-33E4-4DF3-B844-640830066810}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F9152A3B-33E4-4DF3-B844-640830066810}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AF29DACC-2D19-4994-8DDA-F9A47C878248}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AF29DACC-2D19-4994-8DDA-F9A47C878248}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AF29DACC-2D19-4994-8DDA-F9A47C878248}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AF29DACC-2D19-4994-8DDA-F9A47C878248}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7A63C49A-8565-46D0-B67C-1B3D30B8B0B0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7A63C49A-8565-46D0-B67C-1B3D30B8B0B0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7A63C49A-8565-46D0-B67C-1B3D30B8B0B0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7A63C49A-8565-46D0-B67C-1B3D30B8B0B0}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -139,6 +151,8 @@ Global
 		{E3C81324-F2B9-4563-941B-139708B19301} = {DA2FCF6F-C669-4C23-AD47-F3ED5B4BDDBE}
 		{89445FE7-4539-4025-92C7-E1A06EE7B274} = {36377E00-3588-4077-A59F-51D5D468A450}
 		{F9152A3B-33E4-4DF3-B844-640830066810} = {DA2FCF6F-C669-4C23-AD47-F3ED5B4BDDBE}
+		{AF29DACC-2D19-4994-8DDA-F9A47C878248} = {DA2FCF6F-C669-4C23-AD47-F3ED5B4BDDBE}
+		{7A63C49A-8565-46D0-B67C-1B3D30B8B0B0} = {DA2FCF6F-C669-4C23-AD47-F3ED5B4BDDBE}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {9BD7057F-55FC-4BEC-B47A-A5794EC3C444}

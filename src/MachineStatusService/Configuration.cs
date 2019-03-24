@@ -1,4 +1,4 @@
-﻿namespace MachineService
+﻿namespace MachineStatusService
 {
     public class Configuration
     {
@@ -7,6 +7,5 @@
         public string RabbitMqHost { get; set; }
         public string RabbitMqUser { get; set; }
         public string RabbitMqPassword { get; set; }
-        public int MachineCount { get; set; }
     }
 }

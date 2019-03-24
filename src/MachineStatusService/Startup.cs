@@ -1,7 +1,6 @@
-﻿namespace MachineService
+﻿namespace MachineStatusService
 {
     using System;
-    using System.Globalization;
     using Castle.Facilities.AspNetCore;
     using Castle.Facilities.TypedFactory;
     using Castle.MicroKernel.Registration;
@@ -10,11 +9,7 @@
     using EventBus.RabbitMQ;
     using EventLogger.NLog;
     using Logging.NLog.Impl.Castle;
-    using MachineService.Core;
-    using MachineService.EventHandlers;
-    using MachineService.Factories;
-    using MachineService.Managers;
-    using MachineService.Models;
+    using MachineStatusService.EventHandlers;
     using Microsoft.AspNetCore.Builder;
     using Microsoft.AspNetCore.Hosting;
     using Microsoft.AspNetCore.Mvc;
@@ -46,7 +41,6 @@
                     RabbitMqHost = Environment.GetEnvironmentVariable("RABBITMQ_HOST"),
                     RabbitMqUser = Environment.GetEnvironmentVariable("RABBITMQ_USER"),
                     RabbitMqPassword = Environment.GetEnvironmentVariable("RABBITMQ_PASSWORD"),
-                    MachineCount = int.Parse(Environment.GetEnvironmentVariable("MACHINE_COUNT"), CultureInfo.InvariantCulture)
                 };
             }
             else
@@ -66,8 +60,6 @@
             container.Install(new LogInstaller());
 
             container.Register(
-                Component.For<IMachineFactory>().AsFactory(),
-
                 Component.For<IIntegrationEventHandlerFactory>().AsFactory(new IntegrationEventHandlerComponentSelector()),
 
                 Component.For<IEventBusSubscriptionsManager>()
@@ -94,15 +86,7 @@
                              password = cfg.RabbitMqPassword
                          }),
 
-                Component.For<IMachine>()
-                         .ImplementedBy<Machine>()
-                         .LifestyleTransient(),
-
-                Component.For<IMachineManager>()
-                         .ImplementedBy<MachineManager>()
-                         .DependsOn(new { machineCount = cfg.MachineCount }),
-
-                Component.For<MachineCommandIntegrationEventHandler>(),
+                Component.For<MachineStatusIntegrationEventHandler>(),
 
                 Component.For<Service>());
 

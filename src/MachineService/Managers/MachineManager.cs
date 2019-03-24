@@ -29,13 +29,17 @@
         private void CreateMachines(int machineCount)
         {
             _machines = Enumerable.Range(1, machineCount)
-                                  .Select(m =>
-                                      {
-                                          var machine = _machineFactory.CreateMachine($"M{m}");
-                                          machine.StartMachine();
-                                          return machine;
-                                      })
+                                  .Select(m => _machineFactory.CreateMachine($"M{m}"))
                                   .ToDictionary(k => k.MachineName, v => v);
+        }
+
+        public void Dispose()
+        {
+            foreach (var machine in GetAllMachines())
+            {
+                machine.StopMachine(false);
+                machine.Dispose();
+            }
         }
     }
 }
