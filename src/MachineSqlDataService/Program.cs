@@ -10,6 +10,7 @@ namespace MachineSqlDataService
     using Data.Sql;
     using EventBus;
     using EventBus.RabbitMQ;
+    using EventLogger.NLog;
     using Interfaces;
     using Logging.NLog.Impl.Castle;
     using Microsoft.Extensions.Configuration;
@@ -67,7 +68,7 @@ namespace MachineSqlDataService
                          .ImplementedBy<InMemoryEventBusSubscriptionsManager>(),
 
                 Component.For<IEventLogger>()
-                         .ImplementedBy<ConsoleEventLogger>(),
+                         .ImplementedBy<EventLogger>(),
 
                 Component.For<IEventBus>()
                          .ImplementedBy<EventBusRabbitMQ>()

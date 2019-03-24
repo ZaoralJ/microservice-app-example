@@ -13,6 +13,13 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
+  
+  <ItemGroup>
+    <None Update="NLog.config">
+      <CopyToPublishDirectory>Always</CopyToPublishDirectory>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="Castle.Windsor" Version="5.0.0" />
@@ -27,6 +34,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Data.Sql\Data.Sql.csproj" />
+    <ProjectReference Include="..\EventLogger.NLog\EventLogger.NLog.csproj" />
     <ProjectReference Include="..\Framework\EventBus.RabbitMQ\EventBus.RabbitMQ.csproj" />
     <ProjectReference Include="..\Framework\Logging.NLog.Impl.Castle\Logging.NLog.Impl.Castle.csproj" />
     <ProjectReference Include="..\Interfaces\Interfaces.csproj" />

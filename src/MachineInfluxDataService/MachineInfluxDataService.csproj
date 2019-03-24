@@ -21,6 +21,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Data.Influx\Data.Influx.csproj" />
+    <ProjectReference Include="..\EventLogger.NLog\EventLogger.NLog.csproj" />
     <ProjectReference Include="..\Framework\EventBus.RabbitMQ\EventBus.RabbitMQ.csproj" />
     <ProjectReference Include="..\Framework\Logging.NLog.Impl.Castle\Logging.NLog.Impl.Castle.csproj" />
     <ProjectReference Include="..\Interfaces\Interfaces.csproj" />
@@ -31,6 +32,10 @@
     <None Update="appsettings.json">
       <CopyToPublishDirectory>Always</CopyToPublishDirectory>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="NLog.config">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <CopyToPublishDirectory>Always</CopyToPublishDirectory>
     </None>
   </ItemGroup>
 

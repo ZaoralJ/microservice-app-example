@@ -8,6 +8,7 @@
     using Castle.Windsor;
     using EventBus;
     using EventBus.RabbitMQ;
+    using EventLogger.NLog;
     using Logging.NLog.Impl.Castle;
     using MachineService.Core;
     using MachineService.Factories;
@@ -67,7 +68,7 @@
                          .ImplementedBy<InMemoryEventBusSubscriptionsManager>(),
 
                 Component.For<IEventLogger>()
-                         .ImplementedBy<ConsoleEventLogger>(),
+                         .ImplementedBy<EventLogger>(),
 
                 Component.For<IEventBus>()
                          .ImplementedBy<EventBusRabbitMQ>()

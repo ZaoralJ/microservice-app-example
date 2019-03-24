@@ -39,6 +39,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Data.Influx", "Data.Influx\
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MachineInfluxDataService", "MachineInfluxDataService\MachineInfluxDataService.csproj", "{E3C81324-F2B9-4563-941B-139708B19301}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EventLogger.NLog", "EventLogger.NLog\EventLogger.NLog.csproj", "{89445FE7-4539-4025-92C7-E1A06EE7B274}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -105,6 +107,10 @@ Global
 		{E3C81324-F2B9-4563-941B-139708B19301}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E3C81324-F2B9-4563-941B-139708B19301}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E3C81324-F2B9-4563-941B-139708B19301}.Release|Any CPU.Build.0 = Release|Any CPU
+		{89445FE7-4539-4025-92C7-E1A06EE7B274}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{89445FE7-4539-4025-92C7-E1A06EE7B274}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{89445FE7-4539-4025-92C7-E1A06EE7B274}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{89445FE7-4539-4025-92C7-E1A06EE7B274}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -125,6 +131,7 @@ Global
 		{9DFDA1E0-75B3-4CDB-BD64-BDC2EBC34D86} = {D3A57D1F-6929-4CC7-BCD8-1643A501B3A1}
 		{F0E2F5B6-DE1B-4126-9D9F-F3798E975022} = {D3A57D1F-6929-4CC7-BCD8-1643A501B3A1}
 		{E3C81324-F2B9-4563-941B-139708B19301} = {DA2FCF6F-C669-4C23-AD47-F3ED5B4BDDBE}
+		{89445FE7-4539-4025-92C7-E1A06EE7B274} = {36377E00-3588-4077-A59F-51D5D468A450}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {9BD7057F-55FC-4BEC-B47A-A5794EC3C444}
