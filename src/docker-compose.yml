@@ -1,0 +1,158 @@
+version: '3.6'
+
+networks:
+  default:
+    driver: overlay
+    name: test-app
+    attachable: true
+    
+services:
+
+  rabbit:
+    image: zaoralj/testapp-rabbit
+    deploy:
+      mode: replicated
+      replicas: 1
+    ports:
+        - 5672:5672
+        - 15672:15672
+    networks:
+      - default
+
+  mssql:
+    image: zaoralj/test-app-mssql
+    deploy:
+      mode: replicated
+      replicas: 1
+    ports:
+        - 1433:1433
+    networks:
+      - default
+  
+  influxdb:
+    image: influxdb
+    deploy:
+      mode: replicated
+      replicas: 1
+    ports:
+        - 8086:8086
+    networks:
+      - default
+
+  machine-command-service:
+    image: zaoralj/testapp-machine-command-service
+    deploy:
+      mode: replicated
+      replicas: 1
+    depends_on:
+      - rabbit
+    ports:
+      - 8080:80
+    networks:
+      - default
+    environment:
+      - RUNNING_IN_CONTAINER=true
+      - RABBITMQ_BROKER_NAME=eventbus
+      - RABBITMQ_HOST=rabbit
+      - RABBITMQ_USER=guest
+      - RABBITMQ_PASSWORD=guest
+
+  machine-data-api:
+    image: zaoralj/testapp-machine-data-api
+    deploy:
+      mode: replicated
+      replicas: 1
+    depends_on:
+      - influxdb
+    ports:
+      - 8081:80
+    networks:
+      - default
+    environment:
+      - RUNNING_IN_CONTAINER=true
+      - INFLUX_ENDPOINT=http://influxdb:8086
+      - INFLUX_USERNAME=root
+      - INFLUX_PASSWORD=root
+
+  machine-influx-data-service:
+    image: zaoralj/testapp-machine-influx-data-service
+    deploy:
+      mode: replicated
+      replicas: 1
+    restart: on-failure
+    depends_on:
+      - rabbit
+      - influxdb
+    networks:
+      - default
+    environment:
+      - RUNNING_IN_CONTAINER=true
+      - RABBITMQ_BROKER_NAME=eventbus
+      - RABBITMQ_QUEUE_NAME=MachineValuesInflux
+      - RABBITMQ_HOST=rabbit
+      - RABBITMQ_USER=guest
+      - RABBITMQ_PASSWORD=guest
+      - RABBITMQ_PREFETCH_COUNT=50
+      - INFLUX_ENDPOINT=http://influxdb:8086
+      - INFLUX_USERNAME=root
+      - INFLUX_PASSWORD=root
+  
+  machine-sql-data-service:
+    image: zaoralj/testapp-machine-sql-data-service
+    deploy:
+      mode: replicated
+      replicas: 1
+    restart: on-failure
+    depends_on:
+      - rabbit
+      - mssql
+    networks:
+      - default
+    environment:
+      - RUNNING_IN_CONTAINER=true
+      - RABBITMQ_BROKER_NAME=eventbus
+      - RABBITMQ_QUEUE_NAME=MachineValuesSql
+      - RABBITMQ_HOST=TEST_rabbit
+      - RABBITMQ_USER=guest
+      - RABBITMQ_PASSWORD=guest
+      - RABBITMQ_PREFETCH_COUNT=50
+      - SQL_CONNECTION_STRING=Server=mssql;Database=MachineData;User Id=sa;Password=Admin1234@;
+  
+  machine-service:
+    image: zaoralj/testapp-machine-service
+    deploy:
+      mode: replicated
+      replicas: 1
+    restart: on-failure
+    depends_on:
+      - rabbit
+    ports:
+      - 8082:80
+    networks:
+      - default
+    environment:
+      - RUNNING_IN_CONTAINER=true
+      - RABBITMQ_BROKER_NAME=eventbus
+      - RABBITMQ_QUEUE_NAME=MachineCommand
+      - RABBITMQ_HOST=TEST_rabbit
+      - RABBITMQ_USER=guest
+      - RABBITMQ_PASSWORD=guest
+      - MACHINE_COUNT=500
+  
+  machine-status-service:
+    image: zaoralj/testapp-machine-status-service
+    deploy:
+      mode: replicated
+      replicas: 1
+    restart: on-failure
+    depends_on:
+      - rabbit
+    networks:
+      - default
+    environment:
+      - RUNNING_IN_CONTAINER=true
+      - RABBITMQ_BROKER_NAME=eventbus
+      - RABBITMQ_QUEUE_NAME=MachineStatus
+      - RABBITMQ_HOST=rabbit
+      - RABBITMQ_USER=guest
+      - RABBITMQ_PASSWORD=guest
