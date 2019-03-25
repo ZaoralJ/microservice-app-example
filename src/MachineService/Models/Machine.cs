@@ -125,6 +125,7 @@
                         var ts = DateTime.Now;
                         var machineEvent = new MachineDataIntegrationEvent
                         {
+                            Description = $"Machine {MachineName} sent data",
                             MachineName = MachineName,
                             MachineValues = Enumerable.Range(1, 5)
                                                       .Select(v => new MachineValue
