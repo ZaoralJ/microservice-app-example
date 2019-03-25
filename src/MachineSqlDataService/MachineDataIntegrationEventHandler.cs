@@ -4,22 +4,34 @@
     using System.Threading.Tasks;
     using EventBus;
     using Interfaces;
+    using Logging;
     using Models.IntegrationEvents;
+    using Polly;
 
     public class MachineDataIntegrationEventHandler : IntegrationEventHandlerBase<MachineDataIntegrationEvent>
     {
         private readonly IWriteMachineDataRepository _writeMachineDataRepository;
+        private readonly ILogger _logger;
 
         public MachineDataIntegrationEventHandler(
             IWriteMachineDataRepository writeMachineDataRepository,
-            IEventLogger eventLogger) : base(eventLogger)
+            IEventLogger eventLogger,
+            ILogger logger) :
+            base(eventLogger)
         {
             _writeMachineDataRepository = writeMachineDataRepository ?? throw new ArgumentNullException(nameof(writeMachineDataRepository));
+            _logger = logger;
         }
 
-        protected override Task HandleBody(MachineDataIntegrationEvent integrationEvent)
+        protected override async Task HandleBody(MachineDataIntegrationEvent integrationEvent)
         {
-            return _writeMachineDataRepository.WriteMachineValuesAsync(integrationEvent.MachineName, integrationEvent.MachineValues);
+            var policy = Policy.Handle<Exception>()
+                               .WaitAndRetryAsync(
+                                   3,
+                                   retryAttempt => TimeSpan.FromSeconds(Math.Pow(2, retryAttempt)),
+                                   (ex, time) => { _logger.Warn(ex); });
+
+            await policy.ExecuteAsync(() => _writeMachineDataRepository.WriteMachineValuesAsync(integrationEvent.MachineName, integrationEvent.MachineValues));
         }
     }
 }
