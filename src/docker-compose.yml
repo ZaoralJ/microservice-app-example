@@ -14,7 +14,6 @@ services:
       mode: replicated
       replicas: 1
     ports:
-        - 5672:5672
         - 15672:15672
     networks:
       - default
@@ -25,7 +24,7 @@ services:
       mode: replicated
       replicas: 1
     ports:
-        - 1433:1433
+      - 1433:1433
     networks:
       - default
   
@@ -35,9 +34,11 @@ services:
       mode: replicated
       replicas: 1
     ports:
-        - 8086:8086
+      - 8086:8086
     networks:
       - default
+    environment:
+      - INFLUXDB_DB=masterdata
 
   machine-command-service:
     image: zaoralj/testapp-machine-command-service
@@ -79,7 +80,6 @@ services:
     deploy:
       mode: replicated
       replicas: 1
-    restart: on-failure
     depends_on:
       - rabbit
       - influxdb
@@ -102,7 +102,6 @@ services:
     deploy:
       mode: replicated
       replicas: 1
-    restart: on-failure
     depends_on:
       - rabbit
       - mssql
@@ -123,7 +122,6 @@ services:
     deploy:
       mode: replicated
       replicas: 1
-    restart: on-failure
     depends_on:
       - rabbit
     ports:
@@ -137,14 +135,13 @@ services:
       - RABBITMQ_HOST=TEST_rabbit
       - RABBITMQ_USER=guest
       - RABBITMQ_PASSWORD=guest
-      - MACHINE_COUNT=500
+      - MACHINE_COUNT=50
   
   machine-status-service:
     image: zaoralj/testapp-machine-status-service
     deploy:
       mode: replicated
       replicas: 1
-    restart: on-failure
     depends_on:
       - rabbit
     networks:
