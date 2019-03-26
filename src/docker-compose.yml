@@ -121,7 +121,7 @@ services:
       - RUNNING_IN_CONTAINER=true
       - RABBITMQ_BROKER_NAME=eventbus
       - RABBITMQ_QUEUE_NAME=MachineValuesSql
-      - RABBITMQ_HOST=TEST_rabbit
+      - RABBITMQ_HOST=rabbit
       - RABBITMQ_USER=guest
       - RABBITMQ_PASSWORD=guest
       - RABBITMQ_PREFETCH_COUNT=50
@@ -142,7 +142,7 @@ services:
       - RUNNING_IN_CONTAINER=true
       - RABBITMQ_BROKER_NAME=eventbus
       - RABBITMQ_QUEUE_NAME=MachineCommand
-      - RABBITMQ_HOST=TEST_rabbit
+      - RABBITMQ_HOST=rabbit
       - RABBITMQ_USER=guest
       - RABBITMQ_PASSWORD=guest
       - MACHINE_COUNT=50
