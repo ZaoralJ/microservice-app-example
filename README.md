@@ -18,5 +18,10 @@ Nginx is used as gateway and have these methods:
 - POST http://{yourendpoint}:8100/machinecommand/M1/stop
 - POST http://{yourendpoint}:8100/machinecommand/M1/order/42
 
+## Application deployment
+All images are ready on https://cloud.docker.com/u/zaoralj/repository/list and you can deploy it by running command
+```console
+docker stack deploy -c docker-compose.yml --orchestrator swarm test-app
+```
 ## Application schema
 ![Application diagram](https://github.com/ZaoralJ/microservice-app-example/blob/master/AppSchema.png)
