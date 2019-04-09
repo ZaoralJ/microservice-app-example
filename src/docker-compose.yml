@@ -14,7 +14,7 @@ services:
       mode: replicated
       replicas: 1
     ports:
-        - 8100:81
+      - 8100:443
     networks:
       - default
 

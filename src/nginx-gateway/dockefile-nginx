@@ -1,2 +1,31 @@
-FROM nginx
+FROM alpine
+
+WORKDIR /opt
+
+RUN apk add --no-cache \
+            bash \
+            nginx \
+            shadow \
+            apache2-utils \
+            openssl && \
+            usermod -u 10777 nginx && \
+            groupmod -g 10777 nginx && \
+            mkdir -p /opt/www && \
+            mkdir -p /opt/ssl && \
+            chown -R nginx:nginx /opt/ && \
+            mkdir -p /nginx/tmp/ && \
+            chown -R nginx:nginx /nginx/
+
+RUN htpasswd -c -b /etc/nginx/auth.htpasswd admin admin
+
+RUN openssl genrsa -des3 -passout pass:passkey -out /opt/ssl/server.pass.key 2048 
+RUN openssl rsa -passin pass:passkey -in /opt/ssl/server.pass.key -out /opt/ssl/server.key
+RUN rm /opt/ssl/server.pass.key
+RUN openssl req -new -key /opt/ssl/server.key -out /opt/ssl/server.csr -subj "/CN=localhost"
+RUN openssl x509 -req -sha256 -days 3650 -in /opt/ssl/server.csr -signkey /opt/ssl/server.key -out /opt/ssl/server.crt
+
 COPY my-nginx.conf /etc/nginx/conf.d/my-nginx.conf
+
+RUN mkdir -p /run/nginx
+
+CMD ["nginx", "-g", "daemon off;"]
