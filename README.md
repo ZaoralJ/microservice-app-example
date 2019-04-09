@@ -1,6 +1,6 @@
 # Microservice application example
  
-Just concept of microservice application utilizing RabbitMQ message broken for service communication.
+Just concept of microservice application utilizing RabbitMQ message broke for service communication.
 Machine service create collection of machines where machine generate data (5 values, Value1 .. Value5 with random int) in period between 8-14s, machine can be started and stopped and have order number. Default machine count is 50 (names M1 .. M50)
 
 ## RestAPI
