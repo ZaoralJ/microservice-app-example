@@ -1,5 +1,5 @@
 [![Build Status](https://zaoralj.visualstudio.com/Concepts/_apis/build/status/microservice-example-ci?branchName=master)](https://zaoralj.visualstudio.com/Concepts/_build/latest?definitionId=23&branchName=master)
-[![Build Status](https://codecov.io/gh/ZaoralJ/microservice-app-example/graph/badge.svg)](https://codecov.io/gh/ZaoralJ/microservice-app-example/graph/badge.svg)
+[![Build Status](https://codecov.io/gh/ZaoralJ/microservice-app-example/graph/badge.svg)](https://codecov.io/gh/ZaoralJ/microservice-app-example)
 
 
 # Microservice application example
