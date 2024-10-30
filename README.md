@@ -29,3 +29,5 @@ docker stack deploy -c docker-compose.yml --orchestrator swarm test-app
 ```
 ## Application schema
 ![Application diagram](https://github.com/ZaoralJ/microservice-app-example/blob/master/AppSchema.png)
+
+new line
